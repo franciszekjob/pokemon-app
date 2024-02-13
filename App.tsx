@@ -1,20 +1,16 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import PokemonList from './src/screens/pokemon-list/PokemonList';
+import { NavigationContainer } from '@react-navigation/native';
 
 export default function App() {
+  const Tab = createBottomTabNavigator();
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+    <Tab.Navigator>
+    <Tab.Screen name="PokemonList" component={PokemonList} />
+    <Tab.Screen name="FavoritePokemonList" component={PokemonList} />
+    <Tab.Screen name="PokemonMap" component={PokemonList} />
+  </Tab.Navigator>
+  </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
