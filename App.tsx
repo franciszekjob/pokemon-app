@@ -7,6 +7,7 @@ import React, { useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import PokemonMap from "~/screens/pokemonMap/PokemonMap";
 import PokemonList from "~/screens/pokemonList/PokemonList";
+import { PokemonsProvider } from "~/providers/pokemons/PokemonsProvider";
 
 export default function App() {
   const [index, setIndex] = useState(0);
@@ -39,15 +40,17 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <Appbar.Header>
-        <Appbar.Content title={routes[index].title} />
-        {/* <Appbar.Action icon="magnify" onPress={() => {}} /> */}
-      </Appbar.Header>
-      <BottomNavigation
-        navigationState={{ index, routes }}
-        onIndexChange={setIndex}
-        renderScene={renderScene}
-      />
+      <PokemonsProvider>
+        <Appbar.Header>
+          <Appbar.Content title={routes[index].title} />
+          {/* <Appbar.Action icon="magnify" onPress={() => {}} /> */}
+        </Appbar.Header>
+        <BottomNavigation
+          navigationState={{ index, routes }}
+          onIndexChange={setIndex}
+          renderScene={renderScene}
+        />
+      </PokemonsProvider>
     </SafeAreaProvider>
   );
 }
