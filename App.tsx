@@ -1,16 +1,52 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import PokemonList from './src/screens/pokemon-list/PokemonList';
-import { NavigationContainer } from '@react-navigation/native';
+import PokemonList from "./src/screens/pokemon-list/PokemonList";
+import { NavigationContainer } from "@react-navigation/native";
+import { PaperProvider } from "react-native-paper";
+import { defaultTheme } from "~/style/defaultTheme";
+import TabIcon from "~/components/tabIcon/TabIcon";
+import { BottomNavigation, Appbar } from "react-native-paper";
+import React, { useState } from "react";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function App() {
-  const Tab = createBottomTabNavigator();
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([
+    {
+      key: "pokemons",
+      title: "All Pokemons",
+      focusedIcon: "view-list",
+      unfocusedIcon: "view-list-outline",
+    },
+    {
+      key: "map",
+      title: "Map",
+      focusedIcon: "map",
+      unfocusedIcon: "map-outline",
+    },
+    {
+      key: "favorites",
+      title: "Favorites",
+      focusedIcon: "star",
+      unfocusedIcon: "star-outline",
+    },
+  ]);
+
+  const renderScene = BottomNavigation.SceneMap({
+    pokemons: PokemonList,
+    map: PokemonList,
+    favorites: PokemonList,
+  });
+
   return (
-    <NavigationContainer>
-    <Tab.Navigator>
-    <Tab.Screen name="PokemonList" component={PokemonList} />
-    <Tab.Screen name="FavoritePokemonList" component={PokemonList} />
-    <Tab.Screen name="PokemonMap" component={PokemonList} />
-  </Tab.Navigator>
-  </NavigationContainer>
+    <SafeAreaProvider>
+      <Appbar.Header>
+        <Appbar.Content title={routes[index].title} />
+        {/* <Appbar.Action icon="magnify" onPress={() => {}} /> */}
+      </Appbar.Header>
+      <BottomNavigation
+        navigationState={{ index, routes }}
+        onIndexChange={setIndex}
+        renderScene={renderScene}
+      />{" "}
+    </SafeAreaProvider>
   );
 }
