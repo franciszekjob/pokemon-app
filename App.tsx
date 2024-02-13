@@ -1,4 +1,3 @@
-import PokemonList from "./src/screens/pokemon-list/PokemonList";
 import { NavigationContainer } from "@react-navigation/native";
 import { PaperProvider } from "react-native-paper";
 import { defaultTheme } from "~/style/defaultTheme";
@@ -6,6 +5,8 @@ import TabIcon from "~/components/tabIcon/TabIcon";
 import { BottomNavigation, Appbar } from "react-native-paper";
 import React, { useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import PokemonMap from "~/screens/pokemonMap/PokemonMap";
+import PokemonList from "~/screens/pokemonList/PokemonList";
 
 export default function App() {
   const [index, setIndex] = useState(0);
@@ -32,7 +33,7 @@ export default function App() {
 
   const renderScene = BottomNavigation.SceneMap({
     pokemons: PokemonList,
-    map: PokemonList,
+    map: PokemonMap,
     favorites: PokemonList,
   });
 
@@ -46,7 +47,7 @@ export default function App() {
         navigationState={{ index, routes }}
         onIndexChange={setIndex}
         renderScene={renderScene}
-      />{" "}
+      />
     </SafeAreaProvider>
   );
 }
