@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
   modal: {
     backgroundColor: "white",
     padding: 20,
-    width: "80%", // Set the width to 80%
-    alignSelf: "center", // Center the modal
+    width: "80%",
+    alignSelf: "center",
   },
 });

@@ -9,7 +9,6 @@ import { ROUTES } from "~/config/navigationConfig";
 import { useFavoritePokemons } from "~/contexts/favoritePokemons/FavoritePokemonsContext";
 type Props = {
   item: IPokemon;
-  right: () => JSX.Element;
 };
 
 const PokemonListItem = ({ item }: Props) => {
@@ -48,7 +47,7 @@ const PokemonListItem = ({ item }: Props) => {
         </TouchableRipple>
       )}
       onPress={() =>
-        navigation.navigate(ROUTES.POKEMON_DETAILS, { pokemonId: item.id })
+        navigation.navigate(ROUTES.POKEMON_DETAILS, { pokemon: item })
       }
     />
   );

@@ -6,7 +6,7 @@ import IPokemon from "~/ts/interfaces/pokemon/pokemon";
 type Props = {
   pokemons: IPokemon[];
   onScrollEnd?: () => void;
-  loading?: boolean;
+  loading: boolean;
 };
 
 const PokemonsList = ({ pokemons, onScrollEnd, loading }: Props) => {

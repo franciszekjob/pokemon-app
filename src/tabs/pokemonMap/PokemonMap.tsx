@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useState } from "react";
 import { Image, Text, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
@@ -13,12 +7,9 @@ import { DEFAULT_LOCATION } from "~/config/mapConfig";
 import { styles } from "./styles";
 import { styles as listItemStyles } from "../../components/pokemonListItem/styles";
 import {
-  BottomSheetModal,
-  BottomSheetModalProvider,
-} from "@gorhom/bottom-sheet";
-import {
   ActivityIndicator,
   Button,
+  IconButton,
   List,
   Modal,
   Portal,
@@ -27,30 +18,27 @@ import {
 import axios from "axios";
 import IPokemon from "~/ts/interfaces/pokemon/pokemon";
 import lodash from "lodash";
+import { usePokemonPins } from "~/providers/pokemonPinsProvider/PokemonPinsProvider";
+import { ROUTES } from "~/config/navigationConfig";
+import { useNavigation } from "@react-navigation/native";
+
 const PokemonMap = () => {
+  const navigation = useNavigation();
+  const { addPokemonPin, retrievePokemonPins, pokemonPins } = usePokemonPins();
   const [currentLocation, setCurrentLocation] = useState<IGeoLocation | null>(
     null
   );
+  const [pressLocation, setPressLocation] = useState<IGeoLocation | null>(null);
   const [loading, setLoading] = useState(false);
-  // const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-
-  // // variables
-  // const snapPoints = useMemo(() => ["25%", "50%"], []);
-
-  // // callbacks
-  // const handlePresentModalPress = useCallback(() => {
-  //   bottomSheetModalRef.current?.present();
-  // }, []);
-
-  // const handleSheetChanges = useCallback((index: number) => {
-  //   console.log("handleSheetChanges", index);
-  // }, []);
-
   const [visible, setVisible] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [pokemon, setPokemon] = useState<IPokemon | null>(null);
+  const [errorText, setErrorText] = useState<string | null>(null);
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
+  const [displayedPokemon, setDisplayedPokemon] = useState<IPokemon | null>(
+    null
+  );
   const containerStyle = { backgroundColor: "white", padding: 20 };
 
   const getLocation = async () => {
@@ -73,15 +61,29 @@ const PokemonMap = () => {
     }
   };
 
+  const handleLongPress = (event: any) => {
+    const { latitude, longitude } = event.nativeEvent.coordinate;
+    setPressLocation({
+      latitude: latitude,
+      longitude: longitude,
+      latitudeDelta: 0.005,
+      longitudeDelta: 0.005,
+    });
+    showModal();
+  };
+
   const handleSearch = () => {
     setLoading(true);
     axios
       .get(`https://pokeapi.co/api/v2/pokemon/${lodash.lowerCase(searchText)}`)
       .then((res) => {
         setPokemon(res.data);
+        setErrorText(null);
       })
       .catch((error) => {
         console.error("Error getting pokemon:", error);
+        setPokemon(null);
+        setErrorText("Pokemon not found");
       })
       .finally(() => {
         setLoading(false);
@@ -90,26 +92,16 @@ const PokemonMap = () => {
 
   useEffect(() => {
     getLocation();
+    retrievePokemonPins();
   }, []);
 
   return (
-    // <BottomSheetModalProvider>
     <View style={styles.container}>
-      {/* <BottomSheetModal
-          ref={bottomSheetModalRef}
-          index={1}
-          snapPoints={snapPoints}
-          onChange={handleSheetChanges}
-        >
-          <View>
-            <Text>Awesome 🎉</Text>
-          </View>
-        </BottomSheetModal> */}
       <Portal>
         <Modal
           visible={visible}
           onDismiss={hideModal}
-          contentContainerStyle={containerStyle}
+          contentContainerStyle={styles.modal}
         >
           <TextInput
             label="Search"
@@ -117,17 +109,18 @@ const PokemonMap = () => {
             onChangeText={(text) => setSearchText(text)}
             style={{ marginTop: 10 }}
           />
-          {loading && (
-            <View
-              style={{
-                paddingVertical: 10,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <ActivityIndicator size="small" />
-            </View>
-          )}
+
+          <View
+            style={{
+              paddingVertical: 10,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {loading && <ActivityIndicator size="small" />}
+            {errorText && !loading && <Text>{errorText}</Text>}
+          </View>
+
           {pokemon && !loading && (
             <List.Item
               style={listItemStyles.tile}
@@ -140,7 +133,11 @@ const PokemonMap = () => {
                   style={{ width: 50, height: 50 }}
                 />
               )}
-              onPress={() => {}}
+              onPress={async () => {
+                if (!pressLocation) return;
+                await addPokemonPin(pokemon, pressLocation);
+                await retrievePokemonPins();
+              }}
             />
           )}
           <Button
@@ -163,7 +160,7 @@ const PokemonMap = () => {
         zoomEnabled={true}
         pitchEnabled={true}
         rotateEnabled={true}
-        onLongPress={showModal}
+        onLongPress={handleLongPress}
       >
         {currentLocation && (
           <Marker
@@ -171,13 +168,43 @@ const PokemonMap = () => {
               latitude: currentLocation.latitude,
               longitude: currentLocation.longitude,
             }}
-            title="Moja Lokalizacja"
-            description="Jesteś tutaj!"
+            title="Your location"
+            description="You're here!"
           />
         )}
+        {pokemonPins.map((pin) => (
+          <Marker
+            coordinate={{
+              latitude: pin.location.latitude,
+              longitude: pin.location.longitude,
+            }}
+            title={lodash.capitalize(pin.pokemon.name)}
+            onPress={() =>
+              navigation.navigate(ROUTES.POKEMON_DETAILS, {
+                pokemon: pin.pokemon,
+                appBarRight: (
+                  <IconButton
+                    icon="heart"
+                    onPress={() => {
+                      // Handle your action here
+                      console.log("Favorite button pressed");
+                    }}
+                  />
+                ),
+              })
+            }
+          >
+            <Image
+              source={{
+                uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pin.pokemon.id}.png`,
+                width: 30,
+                height: 30,
+              }}
+            />
+          </Marker>
+        ))}
       </MapView>
     </View>
-    // </BottomSheetModalProvider>
   );
 };
 

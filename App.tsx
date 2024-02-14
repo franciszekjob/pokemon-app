@@ -9,6 +9,7 @@ import Home from "~/screens/home/Home";
 import PokemonDetails from "~/screens/pokemonDetails/PokemonDetails";
 import { FavoritePokemonsProvider } from "~/providers/favoritePokemons/FavoritePokemonsProvider";
 import { PaperProvider } from "react-native-paper";
+import { PokemonPinsProvider } from "~/providers/pokemonPinsProvider/PokemonPinsProvider";
 
 const Stack = createNativeStackNavigator();
 const headerStyle = {
@@ -27,26 +28,33 @@ export default function App() {
       <LoadingProvider>
         <PokemonsProvider>
           <FavoritePokemonsProvider>
-            <PaperProvider>
-              <NavigationContainer>
-                <Stack.Navigator>
-                  <Stack.Screen
-                    name="Home"
-                    component={Home}
-                    options={{
-                      headerShown: false,
-                    }}
-                  />
-                  <Stack.Screen
-                    name="PokemonDetails"
-                    component={PokemonDetails}
-                    options={{
-                      headerStyle: {},
-                    }}
-                  />
-                </Stack.Navigator>
-              </NavigationContainer>
-            </PaperProvider>
+            <PokemonPinsProvider>
+              <PaperProvider>
+                <NavigationContainer>
+                  <Stack.Navigator>
+                    <Stack.Screen
+                      name="Home"
+                      component={Home}
+                      options={{
+                        headerShown: false,
+                      }}
+                    />
+                    <Stack.Screen
+                      name="PokemonDetails"
+                      component={PokemonDetails}
+                      options={{
+                        headerStyle: {
+                          backgroundColor: "transparent",
+                        },
+                        headerTitle: "",
+                        headerTransparent: true,
+                        headerTintColor: "#fff",
+                      }}
+                    />
+                  </Stack.Navigator>
+                </NavigationContainer>
+              </PaperProvider>
+            </PokemonPinsProvider>
           </FavoritePokemonsProvider>
         </PokemonsProvider>
       </LoadingProvider>
