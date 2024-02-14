@@ -4,6 +4,7 @@ import IPokemon from "~/ts/interfaces/pokemon/pokemon";
 type PokemonsState = {
   pokemons: IPokemon[];
   fetchPokemons: () => void;
+  fetchingPokemons: boolean;
 };
 
 const PokemonsContext = createContext<PokemonsState | null>(null);
