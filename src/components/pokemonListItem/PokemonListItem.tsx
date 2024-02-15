@@ -1,12 +1,14 @@
 import { View, Text, Image } from "react-native";
 import React from "react";
 import IPokemon from "~/ts/interfaces/pokemon/pokemon";
-import { List, TouchableRipple } from "react-native-paper";
+import { Avatar, List, TouchableRipple } from "react-native-paper";
 import { styles } from "./styles";
 import lodash from "lodash";
 import { useNavigation } from "@react-navigation/native";
 import { ROUTES } from "~/config/navigationConfig";
 import { useFavoritePokemons } from "~/contexts/favoritePokemons/FavoritePokemonsContext";
+import tinycolor from "tinycolor2";
+
 type Props = {
   item: IPokemon;
 };
@@ -22,13 +24,28 @@ const PokemonListItem = ({ item }: Props) => {
     <List.Item
       style={styles.tile}
       title={lodash.capitalize(item.name)}
+      titleStyle={styles.title}
+      description={"#" + item.id.toString().padStart(3, "0")}
       left={() => (
-        <Image
-          source={{
-            uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${item.id}.png`,
+        <View
+          style={{
+            backgroundColor:
+              tinycolor(item.color)
+                .setAlpha(0.5)
+                .toRgbString() || "rgba (255, 255, 255, 0.5)",
+            padding: 5,
+            borderRadius: 50,
+            alignItems: "center",
+            justifyContent: "center",
           }}
-          style={{ width: 50, height: 50 }}
-        />
+        >
+          <Image
+            style={{ width: 60, height: 60 }}
+            source={{
+              uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${item.id}.png`,
+            }}
+          />
+        </View>
       )}
       right={() => (
         <TouchableRipple
@@ -43,6 +60,7 @@ const PokemonListItem = ({ item }: Props) => {
         >
           <List.Icon
             icon={isPokemonFavorite(item.id) ? "star" : "star-outline"}
+            color="gold"
           />
         </TouchableRipple>
       )}

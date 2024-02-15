@@ -2,7 +2,6 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   background: {
-    ...StyleSheet.absoluteFillObject,
     width: "100%",
   },
   circle: {
@@ -23,6 +22,7 @@ export const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     paddingHorizontal: 20,
+    fontFamily: "Montserrat-Regular",
   },
   row: {
     width: "100%",
@@ -34,6 +34,7 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "black",
     textTransform: "capitalize",
+    fontFamily: "Montserrat-Regular",
   },
   pokemonIndex: {
     fontSize: 20,
@@ -42,9 +43,9 @@ export const styles = StyleSheet.create({
     marginRight: 10,
     elevation: 5,
     backgroundColor: "white",
-    borderColor: "#888",
-    borderWidth: 1,
     borderRadius: 100,
+    borderWidth: 0,
+    opacity: 0.5,
   },
   badgeText: {
     textTransform: "capitalize",
@@ -91,4 +92,22 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   infoItemIcon: {},
+});
+
+export const pokemonStatsStyles = StyleSheet.create({
+  main: {
+    marginVertical: 20,
+    paddingHorizontal: 20,
+  },
+  buttons: {
+    marginBottom: 20,
+  },
+  statsItem: {
+    marginBottom: 20,
+  },
+  statsItemTop: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
 });

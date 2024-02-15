@@ -1,3 +1,4 @@
+import IPokemonStat from "./stat";
 import IPokemonType from "./type";
 
 export default interface IPokemon {
@@ -7,4 +8,6 @@ export default interface IPokemon {
     weight?: number;
     height?: number;
     types?: IPokemonType[]
+    stats?: IPokemonStat[]
+    color?:string;
 }

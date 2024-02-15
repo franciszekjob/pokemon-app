@@ -15,11 +15,6 @@ const PokemonsProvider: React.FC<PokemonsProviderProps> = ({ children }) => {
   const [offset, setOffset] = useState<number>(0);
   const [fetchingPokemons, setFetchingPokemons] = useState<boolean>(false);
 
-  // const fetchPokemonData = async (id: number) => {
-  //   const response = await axios.get(`${BACKEND_URL}/pokemon/${id}`);
-  //   return response.data;
-  // };
-
   const fetchPokemons = async () => {
     setFetchingPokemons(true);
     const response = await axios.get(`${BACKEND_URL}/pokemon`, {
@@ -29,14 +24,24 @@ const PokemonsProvider: React.FC<PokemonsProviderProps> = ({ children }) => {
       },
     });
 
+    const colors = await Promise.all(
+      response.data.results.map(async (pokemon: any) => {
+        const pokemonData = await axios.get(pokemon.url);
+        const species = await axios.get(pokemonData.data.species.url);
+        return species.data.color.name;
+      })
+    );
+
     setPokemons((pokemons) => [
       ...pokemons,
-      ...response.data.results.map((pokemon: IPokemon) => ({
+      ...response.data.results.map((pokemon: IPokemon, index: number) => ({
         name: pokemon.name,
         url: pokemon.url,
         id: extractPokemontId(pokemon.url),
+        color: colors[index],
       })),
     ]);
+
     setOffset((offset) => offset + itemsPerFetch);
     setFetchingPokemons(false);
     // // fetch data of each pokemon

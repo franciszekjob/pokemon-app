@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, useWindowDimensions } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  useWindowDimensions,
+  ScrollView,
+} from "react-native";
 import axios from "axios";
 import ISpecies from "~/ts/interfaces/pokemon/species";
 import IPokemon from "~/ts/interfaces/pokemon/pokemon";
 import IPokemonType from "~/ts/interfaces/pokemon/type";
 import { Chip, List } from "react-native-paper";
 import { styles } from "./styles";
+import PokemonStats from "./PokemonStats";
 const PokemonDetails = ({ route, navigation }) => {
   const pokemon: IPokemon = route.params.pokemon;
   const { width, height } = useWindowDimensions();
@@ -39,14 +46,21 @@ const PokemonDetails = ({ route, navigation }) => {
   return (
     speciesData &&
     pokemonData && (
-      <>
-        <View
-          style={{
-            backgroundColor: "white",
-            height: height,
-          }}
-        ></View>
+      <ScrollView>
         <View style={[styles.background]}>
+          <View
+            style={[
+              styles.circle,
+              {
+                borderRadius: width * 2,
+                width: width * 1.5,
+                left: -0.25 * width,
+                height: width * 1.5,
+                top: -0.75 * width,
+                backgroundColor: speciesData.color.name,
+              },
+            ]}
+          ></View>
           <View style={styles.main}>
             <Image
               source={{
@@ -74,7 +88,15 @@ const PokemonDetails = ({ route, navigation }) => {
             {pokemonData && pokemonData.types && (
               <View style={styles.badges}>
                 {pokemonData.types.map((type: IPokemonType) => (
-                  <Chip style={styles.badge}>
+                  <Chip
+                    key={type.type.name}
+                    style={[
+                      styles.badge,
+                      {
+                        backgroundColor: speciesData.color.name,
+                      },
+                    ]}
+                  >
                     {<Text style={styles.badgeText}>{type.type.name}</Text>}
                   </Chip>
                 ))}
@@ -109,22 +131,9 @@ const PokemonDetails = ({ route, navigation }) => {
               <Text style={styles.infoItemContent}>{pokemonData.height} m</Text>
             </View>
           </View>
+          <PokemonStats pokemon={pokemonData} />
         </View>
-
-        <View
-          style={[
-            styles.circle,
-            {
-              borderRadius: width * 2,
-              width: width * 1.5,
-              left: -0.25 * width,
-              height: width * 1.5,
-              top: -0.75 * width,
-              backgroundColor: speciesData.color.name,
-            },
-          ]}
-        ></View>
-      </>
+      </ScrollView>
     )
   );
 };

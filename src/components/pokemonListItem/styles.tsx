@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   tile: {
-    marginLeft: 10,
+    paddingLeft: 10,
     alignItems: "center",
     flexDirection: "row",
   },
@@ -11,5 +11,9 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 10,
     borderRadius: 50,
+  },
+  title: {
+    fontWeight: "bold",
+    fontFamily: "Montserrat-Regular",
   },
 });

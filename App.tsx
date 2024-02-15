@@ -10,19 +10,17 @@ import PokemonDetails from "~/screens/pokemonDetails/PokemonDetails";
 import { FavoritePokemonsProvider } from "~/providers/favoritePokemons/FavoritePokemonsProvider";
 import { PaperProvider } from "react-native-paper";
 import { PokemonPinsProvider } from "~/providers/pokemonPinsProvider/PokemonPinsProvider";
+import { useFonts } from "expo-font";
 
 const Stack = createNativeStackNavigator();
-const headerStyle = {
-  headerStyle: {
-    backgroundColor: "red",
-  },
-  headerTintColor: "#fff",
-  headerTitleStyle: {
-    fontWeight: "bold",
-  },
-};
 
 export default function App() {
+  const [fontsLoaded, fontError] = useFonts({
+    "Montserrat-Bold": require("./assets/fonts/Montserrat-Bold.otf"),
+    "Montserrat-Regular": require("./assets/fonts/Montserrat-Regular.otf"),
+    "Montserrat-Light": require("./assets/fonts/Montserrat-Light.otf"),
+    "Montserrat-Medium": require("./assets/fonts/Montserrat-Medium.otf"),
+  });
   return (
     <SafeAreaProvider>
       <LoadingProvider>

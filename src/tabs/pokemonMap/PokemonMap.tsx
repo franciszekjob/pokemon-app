@@ -24,11 +24,18 @@ import { useNavigation } from "@react-navigation/native";
 
 const PokemonMap = () => {
   const navigation = useNavigation();
-  const { addPokemonPin, retrievePokemonPins, pokemonPins } = usePokemonPins();
+  const {
+    addPokemonPin,
+    retrievePokemonPins,
+    pokemonPins,
+    deletePokemonPin,
+    isPokemonPinSaved,
+  } = usePokemonPins();
   const [currentLocation, setCurrentLocation] = useState<IGeoLocation | null>(
     null
   );
   const [pressLocation, setPressLocation] = useState<IGeoLocation | null>(null);
+  const [locationFetched, setLocationFetched] = useState(false);
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
   const [searchText, setSearchText] = useState("");
@@ -39,7 +46,6 @@ const PokemonMap = () => {
   const [displayedPokemon, setDisplayedPokemon] = useState<IPokemon | null>(
     null
   );
-  const containerStyle = { backgroundColor: "white", padding: 20 };
 
   const getLocation = async () => {
     try {
@@ -56,6 +62,7 @@ const PokemonMap = () => {
         latitudeDelta: 0.005,
         longitudeDelta: 0.005,
       });
+      setLocationFetched(true);
     } catch (error) {
       console.error("Error getting location:", error);
     }
@@ -104,7 +111,7 @@ const PokemonMap = () => {
           contentContainerStyle={styles.modal}
         >
           <TextInput
-            label="Search"
+            label="Search pokemon name"
             value={searchText}
             onChangeText={(text) => setSearchText(text)}
             style={{ marginTop: 10 }}
@@ -149,61 +156,77 @@ const PokemonMap = () => {
           </Button>
         </Modal>
       </Portal>
-      <MapView
-        style={styles.map}
-        initialRegion={currentLocation || DEFAULT_LOCATION}
-        showsUserLocation={true}
-        showsMyLocationButton={true}
-        followsUserLocation={true}
-        showsCompass={true}
-        scrollEnabled={true}
-        zoomEnabled={true}
-        pitchEnabled={true}
-        rotateEnabled={true}
-        onLongPress={handleLongPress}
-      >
-        {currentLocation && (
-          <Marker
-            coordinate={{
-              latitude: currentLocation.latitude,
-              longitude: currentLocation.longitude,
-            }}
-            title="Your location"
-            description="You're here!"
-          />
-        )}
-        {pokemonPins.map((pin) => (
-          <Marker
-            coordinate={{
-              latitude: pin.location.latitude,
-              longitude: pin.location.longitude,
-            }}
-            title={lodash.capitalize(pin.pokemon.name)}
-            onPress={() =>
-              navigation.navigate(ROUTES.POKEMON_DETAILS, {
-                pokemon: pin.pokemon,
-                appBarRight: (
-                  <IconButton
-                    icon="heart"
-                    onPress={() => {
-                      // Handle your action here
-                      console.log("Favorite button pressed");
-                    }}
-                  />
-                ),
-              })
-            }
-          >
-            <Image
-              source={{
-                uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pin.pokemon.id}.png`,
-                width: 30,
-                height: 30,
+      {currentLocation && (
+        <MapView
+          style={styles.map}
+          initialRegion={
+            locationFetched
+              ? currentLocation || DEFAULT_LOCATION
+              : DEFAULT_LOCATION
+          }
+          showsUserLocation={true}
+          showsMyLocationButton={true}
+          followsUserLocation={true}
+          showsCompass={true}
+          scrollEnabled={true}
+          zoomEnabled={true}
+          pitchEnabled={true}
+          rotateEnabled={true}
+          onLongPress={handleLongPress}
+        >
+          {currentLocation && (
+            <Marker
+              coordinate={{
+                latitude: currentLocation.latitude,
+                longitude: currentLocation.longitude,
               }}
+              title="Your location"
+              description="You're here!"
             />
-          </Marker>
-        ))}
-      </MapView>
+          )}
+          {pokemonPins.map((pin) => (
+            <Marker
+              key={pin.id}
+              coordinate={{
+                latitude: pin.location.latitude,
+                longitude: pin.location.longitude,
+              }}
+              title={lodash.capitalize(pin.pokemon.name)}
+              onPress={() =>
+                navigation.navigate(ROUTES.POKEMON_DETAILS, {
+                  pokemon: pin.pokemon,
+                  appBarRight: (
+                    <IconButton
+                      iconColor={"white"}
+                      icon={
+                        isPokemonPinSaved(pin.pokemon, pin.location)
+                          ? "map-marker"
+                          : "map-marker-outline"
+                      }
+                      onPress={async () => {
+                        if (isPokemonPinSaved(pin.pokemon, pin.location)) {
+                          await deletePokemonPin(pin.id);
+                        } else {
+                          await addPokemonPin(pin.pokemon, pin.location);
+                        }
+                        await retrievePokemonPins();
+                      }}
+                    />
+                  ),
+                })
+              }
+            >
+              <Image
+                source={{
+                  uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pin.pokemon.id}.png`,
+                  width: 30,
+                  height: 30,
+                }}
+              />
+            </Marker>
+          ))}
+        </MapView>
+      )}
     </View>
   );
 };
