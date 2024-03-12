@@ -1,7 +1,7 @@
+import PokemonsList from "components/pokemonsList/PokemonsList";
+import { useFavoritePokemons } from "contexts/favoritePokemons/FavoritePokemonsContext";
 import { useEffect } from "react";
 import { View } from "react-native";
-import PokemonsList from "~/components/pokemonsList/PokemonsList";
-import { useFavoritePokemons } from "~/contexts/favoritePokemons/FavoritePokemonsContext";
 
 const FavoritePokemons = ({}) => {
   const {

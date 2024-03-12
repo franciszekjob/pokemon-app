@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Image, Text, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
-import IGeoLocation from "~/ts/interfaces/map/location";
-import { DEFAULT_LOCATION } from "~/config/mapConfig";
 import { styles } from "./styles";
 import { styles as listItemStyles } from "../../components/pokemonListItem/styles";
 import {
@@ -16,11 +14,13 @@ import {
   TextInput,
 } from "react-native-paper";
 import axios from "axios";
-import IPokemon from "~/ts/interfaces/pokemon/pokemon";
 import lodash from "lodash";
-import { usePokemonPins } from "~/providers/pokemonPinsProvider/PokemonPinsProvider";
-import { ROUTES } from "~/config/navigationConfig";
 import { useNavigation } from "@react-navigation/native";
+import { usePokemonPins } from "providers/pokemonPinsProvider/PokemonPinsProvider";
+import { DEFAULT_LOCATION } from "config/mapConfig";
+import { ROUTES } from "config/navigationConfig";
+import IGeoLocation from "ts/interfaces/map/location";
+import IPokemon from "ts/interfaces/pokemon/pokemon";
 
 const PokemonMap = () => {
   const navigation = useNavigation();

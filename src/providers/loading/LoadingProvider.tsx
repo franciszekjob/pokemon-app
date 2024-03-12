@@ -1,6 +1,6 @@
+import { LoadingContext } from "contexts/loading/LoadingContext";
 import React, { useContext, useState, ReactNode } from "react";
-import { LoadingContext } from "~/contexts/loading/LoadingContext";
-import ILoading from "~/ts/interfaces/loading/loading";
+import ILoading from "ts/interfaces/loading/loading";
 
 interface LoadingProviderProps {
   children: ReactNode;

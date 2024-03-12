@@ -1,9 +1,9 @@
 import { View, Text } from "react-native";
 import React, { useState } from "react";
 import { ProgressBar, SegmentedButtons } from "react-native-paper";
-import IPokemon from "~/ts/interfaces/pokemon/pokemon";
 import { pokemonStatsStyles as styles } from "./styles";
 import { startCase, replace } from "lodash";
+import IPokemon from "ts/interfaces/pokemon/pokemon";
 type Props = {
   pokemon: IPokemon;
 };
@@ -70,9 +70,9 @@ const PokemonStats = ({ pokemon }: Props) => {
           ))}
         </View>
       )}
-      {value === "abilities" && (
+      {/* {value === "abilities" && (
         
-      )}
+      )} */}
     </View>
   );
 };

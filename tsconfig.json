@@ -14,10 +14,8 @@
     "moduleResolution": "node",
     "baseUrl": "./src",
     "resolveJsonModule": true,
-    "paths": {
-      "~/*": ["*"]
-    },
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true
-  }
+  },
+  "include": ["./"]
 }

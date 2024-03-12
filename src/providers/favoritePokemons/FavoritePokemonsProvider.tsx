@@ -1,7 +1,7 @@
 import React, { useContext, useState, ReactNode, useEffect } from "react";
-import { FavoritePokemonsContext } from "~/contexts/favoritePokemons/FavoritePokemonsContext";
-import IPokemon from "~/ts/interfaces/pokemon/pokemon";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { FavoritePokemonsContext } from "contexts/favoritePokemons/FavoritePokemonsContext";
+import IPokemon from "ts/interfaces/pokemon/pokemon";
 
 interface PokemonsProviderProps {
   children: ReactNode;

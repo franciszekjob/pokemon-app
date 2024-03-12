@@ -1,13 +1,13 @@
 import { View, Text, Image } from "react-native";
 import React from "react";
-import IPokemon from "~/ts/interfaces/pokemon/pokemon";
 import { Avatar, List, TouchableRipple } from "react-native-paper";
 import { styles } from "./styles";
 import lodash from "lodash";
 import { useNavigation } from "@react-navigation/native";
-import { ROUTES } from "~/config/navigationConfig";
-import { useFavoritePokemons } from "~/contexts/favoritePokemons/FavoritePokemonsContext";
 import tinycolor from "tinycolor2";
+import { ROUTES } from "config/navigationConfig";
+import { useFavoritePokemons } from "contexts/favoritePokemons/FavoritePokemonsContext";
+import IPokemon from "ts/interfaces/pokemon/pokemon";
 
 type Props = {
   item: IPokemon;

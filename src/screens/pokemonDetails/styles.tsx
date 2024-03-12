@@ -49,7 +49,7 @@ export const styles = StyleSheet.create({
   },
   badgeText: {
     textTransform: "capitalize",
-    color: "black",
+    color: "white",
   },
   badges: {
     width: "100%",

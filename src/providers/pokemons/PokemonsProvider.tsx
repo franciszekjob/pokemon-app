@@ -1,9 +1,8 @@
 import React, { useContext, useState, ReactNode, useEffect } from "react";
-import { PokemonsContext } from "~/contexts/pokemons/PokemonsContext";
-import IPokemon from "~/ts/interfaces/pokemon/pokemon";
 import axios from "axios";
-import { useLoading } from "../loading/LoadingProvider";
-import { extractPokemontId } from "~/utils/utils";
+import { PokemonsContext } from "contexts/pokemons/PokemonsContext";
+import IPokemon from "ts/interfaces/pokemon/pokemon";
+import { extractPokemontId } from "utils/utils";
 // import { BACKEND_URL } from "@env";
 interface PokemonsProviderProps {
   children: ReactNode;

@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import ILoading from "~/ts/interfaces/loading/loading";
+import ILoading from "ts/interfaces/loading/loading";
 
 type LoadingState = {
   loading: ILoading;

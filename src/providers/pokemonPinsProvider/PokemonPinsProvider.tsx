@@ -1,8 +1,8 @@
 import React, { useContext, useState, ReactNode, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import IPokemonPin from "~/ts/interfaces/map/pokemonPin";
-import IPokemon from "~/ts/interfaces/pokemon/pokemon";
-import IGeoLocation from "~/ts/interfaces/map/location";
+import IGeoLocation from "ts/interfaces/map/location";
+import IPokemonPin from "ts/interfaces/map/pokemonPin";
+import IPokemon from "ts/interfaces/pokemon/pokemon";
 
 interface PokemonPinsProviderProps {
   children: ReactNode;

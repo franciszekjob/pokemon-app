@@ -1,8 +1,8 @@
+import PokemonListItem from "components/pokemonListItem/PokemonListItem";
 import React from "react";
 import { FlatList, Image, Text, View } from "react-native";
 import { ActivityIndicator, List } from "react-native-paper";
-import PokemonListItem from "~/components/pokemonListItem/PokemonListItem";
-import IPokemon from "~/ts/interfaces/pokemon/pokemon";
+import IPokemon from "ts/interfaces/pokemon/pokemon";
 type Props = {
   pokemons: IPokemon[];
   onScrollEnd?: () => void;

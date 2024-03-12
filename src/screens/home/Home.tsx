@@ -1,10 +1,10 @@
 import { View, Text } from "react-native";
 import React, { useState } from "react";
 import { Appbar, BottomNavigation } from "react-native-paper";
-import Loading from "~/components/loading/Loading";
-import PokemonMap from "~/tabs/pokemonMap/PokemonMap";
-import AllPokemons from "~/tabs/allPokemons/AllPokemons";
-import FavoritePokemons from "~/tabs/favoritePokemons/FavoritePokemons";
+import Loading from "components/loading/Loading";
+import PokemonMap from "tabs/pokemonMap/PokemonMap";
+import AllPokemons from "tabs/allPokemons/AllPokemons";
+import FavoritePokemons from "tabs/favoritePokemons/FavoritePokemons";
 
 const Home = () => {
   const [index, setIndex] = useState(0);

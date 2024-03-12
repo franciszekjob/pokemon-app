@@ -15,28 +15,32 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.pokemonapp"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.anonymous.pokemonapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       [
-      "expo-font",
-      {
-          "fonts": ["./assets/fonts/Montserrat-Regular.otf",
-                    "./assets/fonts/Montserrat-Bold.otf",
-                    "./assets/fonts/Montserrat-light.otf",
-                    "./assets/fonts/Montserrat-Medium.otf",
-                    "./assets/fonts/Montserrat-SemiBold.otf"
-        ]
-        }]
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/Montserrat-Regular.otf",
+            "./assets/fonts/Montserrat-Bold.otf",
+            "./assets/fonts/Montserrat-light.otf",
+            "./assets/fonts/Montserrat-Medium.otf",
+            "./assets/fonts/Montserrat-SemiBold.otf"
+          ]
+        }
+      ]
     ]
   }
 }

@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import IPokemon from "~/ts/interfaces/pokemon/pokemon";
+import IPokemon from "ts/interfaces/pokemon/pokemon";
 
 type FavoritePokemonsState = {
   favoritePokemons: IPokemon[];

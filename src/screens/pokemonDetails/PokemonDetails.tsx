@@ -7,12 +7,12 @@ import {
   ScrollView,
 } from "react-native";
 import axios from "axios";
-import ISpecies from "~/ts/interfaces/pokemon/species";
-import IPokemon from "~/ts/interfaces/pokemon/pokemon";
-import IPokemonType from "~/ts/interfaces/pokemon/type";
 import { Chip, List } from "react-native-paper";
 import { styles } from "./styles";
 import PokemonStats from "./PokemonStats";
+import IPokemon from "ts/interfaces/pokemon/pokemon";
+import ISpecies from "ts/interfaces/pokemon/species";
+import IPokemonType from "ts/interfaces/pokemon/type";
 const PokemonDetails = ({ route, navigation }) => {
   const pokemon: IPokemon = route.params.pokemon;
   const { width, height } = useWindowDimensions();
